@@ -1,3 +1,4 @@
+import BlogHeader from "@/components/BlogHeader";
 import { getBlogBySlug, getBlogs } from "@/lib/blog";
 import { NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
@@ -19,6 +20,7 @@ const BlogDetail: NextPage<Props> = ({ params }) => {
   const blog = use(getInitialBlog(params.slug));
   return (
     <div className="w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 m-auto">
+      <BlogHeader blog={blog} />
       <article className="prose lg:prose-xl">
         <div dangerouslySetInnerHTML={{ __html: blog.content }} />
       </article>

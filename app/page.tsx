@@ -2,12 +2,19 @@ import { use } from "react";
 import { getBlogs } from "@/lib/blog";
 import Image from "next/image";
 import Link from "next/link";
+import { text } from "stream/consumers";
 
 async function getInitialBlogs() {
   const blogs = getBlogs();
 
   return blogs;
 }
+
+const shortify = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+
+  return text.substring(0, maxLength) + "...";
+};
 
 export default function Home() {
   const blogs = use(getInitialBlogs());
@@ -28,8 +35,8 @@ export default function Home() {
               />
             </div>
             <h3 className="mt-4 text-sm text-gray-700">{blog.title}</h3>
-            <p className="mt-1 text-lg font-medium text-gray-900">
-              {blog.description}
+            <p className="mt-1 text-md font-medium text-gray-900">
+              {shortify(blog.description, 100)}
             </p>
           </Link>
         ))}
