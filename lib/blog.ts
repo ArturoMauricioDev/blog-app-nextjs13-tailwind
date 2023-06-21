@@ -17,10 +17,19 @@ const getItemInPath = (filePath: string) => {
   return { ...data, content } as Blog;
 };
 
+const getBlog = (name: string) => {
+  const blog = getItemInPath(join(BLOG_DIR, name));
+  blog.slug = name.replace(/\.md$/, "");
+
+  return blog;
+};
+
+const getBlogBySlug = (slug: string) => getBlog(slug + ".md");
+
 const getBlogs = (): Blog[] => {
   const names = getBlogFileNames();
-  const items = names.map((name) => getItemInPath(join(BLOG_DIR, name)));
+  const items = names.map((name) => getBlog(name));
   return items;
 };
 
-export { getBlogFileNames, getBlogs };
+export { getBlogFileNames, getBlogs, getBlogBySlug };
