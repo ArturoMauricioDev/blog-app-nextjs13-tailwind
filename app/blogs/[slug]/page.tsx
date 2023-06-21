@@ -17,7 +17,13 @@ const getInitialBlog = async (slug: string) => {
 
 const BlogDetail: NextPage<Props> = ({ params }) => {
   const blog = use(getInitialBlog(params.slug));
-  return <div>{blog.content}</div>;
+  return (
+    <div className="w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3 m-auto">
+      <article className="prose lg:prose-xl">
+        <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+      </article>
+    </div>
+  );
 };
 
 export function generateStaticParams() {

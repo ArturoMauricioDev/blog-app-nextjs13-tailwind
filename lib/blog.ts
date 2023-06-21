@@ -2,7 +2,16 @@ import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
 
+import { remark } from "remark";
+import html from "remark-html";
+import remarkGfm from "remark-gfm";
+
 import { Blog } from "@/interfaces/blog";
+
+const markdownToHtml = async (markdown: string) => {
+  const result = await remark().use(html).use(remarkGfm).process(markdown);
+  return result.toString();
+};
 
 const getDir = (path: string) => join(process.cwd(), path);
 const BLOG_DIR = getDir("/content/blogs");
@@ -24,7 +33,11 @@ const getBlog = (name: string) => {
   return blog;
 };
 
-const getBlogBySlug = (slug: string) => getBlog(slug + ".md");
+const getBlogBySlug = async (slug: string) => {
+  const blog = getBlog(slug + ".md");
+  blog.content = await markdownToHtml(blog.content);
+  return blog;
+};
 
 const getBlogs = (): Blog[] => {
   const names = getBlogFileNames();
